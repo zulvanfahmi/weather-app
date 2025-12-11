@@ -17,7 +17,6 @@ export default function HomeScreen() {
   const dispatch = useDispatch<AppDispatch>();
   const { lat, lon, loading, error } = useSelector((state: RootState) => state.location);
   const { currentWeather, loadingWeather, errorWeather } = useSelector((state: RootState) => state.weather);
-
   const { forecast, loadingForecast, errorForecast } = useSelector((state: RootState) => state.forecast);
 
   useEffect(() => {
@@ -25,11 +24,10 @@ export default function HomeScreen() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (lat && lon) dispatch(fetchWeather({ lat, lon }));
-  }, [dispatch, lat, lon]);
-
-  useEffect(() => {
-    if (lat && lon) dispatch(fetchforecast({ lat, lon }));
+    if (lat && lon) {
+      dispatch(fetchWeather({ lat, lon }))
+      dispatch(fetchforecast({ lat, lon }))
+    };
   }, [dispatch, lat, lon]);
 
   if (loading || loadingWeather || loadingForecast) {
@@ -42,7 +40,7 @@ export default function HomeScreen() {
     return (
       <ScreenLayout>
         <View>
-          <Text className="text-white text-2xl">Enable Location Permission to continue.</Text>
+          <Text className="text-white text-2xl">Something went wrong!</Text>
         </View>
       </ScreenLayout>
     );
@@ -205,8 +203,8 @@ export default function HomeScreen() {
           <Text className="text-white text-2xl">&nbsp;&nbsp;Forecast</Text>
         </View>
 
-        <View className="flex-row flex-wrap justify-around">
-          {forecast?.list?.slice(0, 4).map((forecast: any) => (
+        <View className="flex-row flex-wrap justify-around gap-2">
+          {forecast?.list?.slice(0, 40).map((forecast: any) => (
             <View
               key={forecast.dt}
               className="bg-white/10 rounded-t-full rounded-b-full w-1/5 items-center p-2"
