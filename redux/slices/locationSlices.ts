@@ -16,6 +16,9 @@ const locationSlice = createSlice({
     builder
       .addCase(fetchLocation.pending, (state) => {
         state.loading = true;
+        state.error = null;
+        state.lat = 0;
+        state.lon = 0;
       })
       .addCase(fetchLocation.fulfilled, (state, action) => {
         state.loading = false;
@@ -26,6 +29,8 @@ const locationSlice = createSlice({
       .addCase(fetchLocation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.lat = 0;
+        state.lon = 0;
       });
   },
 });

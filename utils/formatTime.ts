@@ -22,6 +22,16 @@ export function formatDate_MonthLong(timestamp: number) {
     return new Date(timestamp * 1000).toLocaleString('en-EN', { month: 'long' });
 }
 
+// Aug
+export function formatDate_MonthShort(timestamp: number) {
+    return new Date(timestamp * 1000).toLocaleString('en-EN', { month: 'short' });
+}
+
+// 08
+export function formatDate_MonthNumber(timestamp: number) {
+    return new Date(timestamp * 1000).toLocaleString('en-EN', { month: 'numeric' });
+}
+
 // 2030
 export function formatDate_YearNumber(timestamp: number) {
     return new Date(timestamp * 1000).toLocaleString('en-EN', { year: 'numeric' });

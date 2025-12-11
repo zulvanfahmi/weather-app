@@ -8,7 +8,7 @@ type ScreenLayoutProps = {
 
 export default function ScreenLayout({ children }: ScreenLayoutProps) {
   return (
-    <SafeAreaView className="flex-1 bg-indigo-950 p-4">
+    <SafeAreaView className="flex-1 bg-indigo-950 px-6">
       <ScrollView
         showsVerticalScrollIndicator={false}
         decelerationRate="fast"

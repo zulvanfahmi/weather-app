@@ -1,20 +1,29 @@
 import { weatherIcons } from "@/assets/icon/weather";
 import ScreenLayout from "@/components/ScreenLayout";
-import useForecast from "@/hooks/useForecast";
+import { AppDispatch, RootState } from "@/redux/store";
+import { fetchforecast } from "@/services/WeatherService";
+import { useEffect } from "react";
 import { Image, Text, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Forecast() {
 
-  const JsonData: any = useForecast(-6.1965, 106.8219);
+  const dispatch = useDispatch<AppDispatch>();
+  const { lat, lon, loading, error } = useSelector((state: RootState) => state.location);
+  const { forecast, loadingForecast, errorForecast } = useSelector((state: RootState) => state.forecast);
+
+  useEffect(() => {
+    if (lat && lon) dispatch(fetchforecast({ lat, lon }));
+  }, [dispatch, lat, lon]);
 
   return (
     <ScreenLayout>
       <View className="flex-1 justify-center items-center gap-4">
-        <Text className="text-white text-2xl">{JsonData?.city?.name}</Text>
+        <Text className="text-white text-2xl">{forecast?.city?.name}</Text>
       </View>
       <View className="flex-row flex-wrap justify-around">
 
-        {JsonData?.list?.map((forecast: any) => (
+        {forecast?.list?.map((forecast: any) => (
           <View
             key={forecast.dt}
             className="bg-white/10 rounded w-1/5 items-center m-1 p-2"
