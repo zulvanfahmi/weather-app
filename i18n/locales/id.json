@@ -1,0 +1,49 @@
+{
+  "tab": {
+    "weather": "Cuaca",
+    "forecast": "Prakiraan",
+    "settings": "Pengaturan"
+  },
+  "homescreen": {
+    "weather": {
+      "Thunderstorm": "Badai Petir",
+      "Drizzle": "Gerimis",
+      "Rain": "Hujan",
+      "Snow": "Salju",
+      "Mist": "Kabut Tipis",
+      "Smoke": "Asap",
+      "Haze": "Kabut",
+      "Dust": "Debu",
+      "Fog": "Kabut Tebal",
+      "Sand": "Pasir",
+      "Ash": "Abu",
+      "Squall": "Angin Kencang",
+      "Tornado": "Angin Puting Beliung",
+      "Clear": "Cerah",
+      "Clouds": "Berawan"
+    },
+    "temperature": "Suhu",
+    "humidity": "Kelembapan",
+    "wind_speed": "Kecepatan Angin",
+    "clouds": "Awan",
+    "visibility": "Jarak Pandang",
+    "pressure": "Tekanan Udara",
+    "ground_level": "Permukaan Tanah",
+    "sea_level": "Permukaan Laut",
+    "sunrise": "Waktu Terbit",
+    "sunset": "Waktu Terbenam",
+    "forecast": "Prakiraan",
+    "see_full_forecast": "Lihat Prakiraan Lengkap"
+  },
+  "forecast": {
+    "real_feel_temperature_graphic": "Grafik Suhu Terasa",
+    "5_days_weather_forecast": "Prakiraan Cuaca 5 Hari",
+    "click_forecast_to_see_details": "Klik Prakiraan untuk Melihat Detail"
+  },
+  "settings": {
+    "settings": "Pengaturan",
+    "metrics": "Metrik",
+    "time_format": "Format Waktu",
+    "hours" : "Jam"
+  }
+}

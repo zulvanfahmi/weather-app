@@ -1,42 +1,50 @@
 import { weatherIcons } from "@/assets/icon/weather";
 import IndexLoading from "@/components/page/IndexLoading";
 import ScreenLayout from "@/components/ScreenLayout";
+import InformationCard from "@/components/ui/InformationCard";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchLocation } from "@/services/LocationService";
 import { fetchforecast, fetchWeather } from "@/services/WeatherService";
-import { formatDate_DayLong, formatDate_DayNumber, formatDate_MonthShort, formatTime_HHMM } from "@/utils/formatTime";
+import { formatDayLong, formatDayNumber, formatMonthShort, formatTime } from "@/utils/formatTime";
 import { Entypo, Feather, FontAwesome, FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
-
 import { useEffect } from "react";
-import { Image, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Image, Text, TextInput, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+
 
 export default function HomeScreen() {
 
   const dispatch = useDispatch<AppDispatch>();
-  const { lat, lon, loading, error } = useSelector((state: RootState) => state.location);
+  const { lat, lon, loadingLocation, errorLocation } = useSelector((state: RootState) => state.location);
   const { currentWeather, loadingWeather, errorWeather } = useSelector((state: RootState) => state.weather);
   const { forecast, loadingForecast, errorForecast } = useSelector((state: RootState) => state.forecast);
+  const { timeFormatGlobal } = useSelector((state: RootState) => state.timeFormat);
+  const { units, unitSymbol } = useSelector((state: RootState) => state.temperatureUnit);
+  const { languageGlobal, APILanguageCode } = useSelector((state: RootState) => state.language);
+  const { t } = useTranslation();
+  // const [citySearch, setCitySearch] = useState(currentWeather.name);
 
   useEffect(() => {
     dispatch(fetchLocation());
   }, [dispatch]);
 
   useEffect(() => {
-    if (lat && lon) {
-      dispatch(fetchWeather({ lat, lon }))
-      dispatch(fetchforecast({ lat, lon }))
-    };
-  }, [dispatch, lat, lon]);
+    if (typeof lat === 'number' && typeof lon === 'number') {
+      const lang = APILanguageCode;
+      dispatch(fetchWeather({ lat, lon, units,lang }));
+      dispatch(fetchforecast({ lat, lon, units, lang }));
+    }
+  }, [dispatch, lat, lon, units, APILanguageCode]);
 
-  if (loading || loadingWeather || loadingForecast) {
+  if (loadingLocation || loadingWeather || loadingForecast) {
     return (
-        <IndexLoading />
+      <IndexLoading />
     );
   }
 
-  if (error || errorWeather || errorForecast) {
+  if (errorLocation || errorWeather || errorForecast) {
     return (
       <ScreenLayout>
         <View>
@@ -46,13 +54,20 @@ export default function HomeScreen() {
     );
   }
 
+  if (!currentWeather || !forecast) {
+    return <IndexLoading />;
+  }
+
   return (
     <ScreenLayout>
 
       <View className="gap-6 mt-8">
         <View className="w-full flex-row items-center my-2">
           <Ionicons color={'#FFFFFF'} size={32} name="location-outline" />
-          <Text className="text-white text-4xl">&nbsp;{currentWeather?.name}</Text>
+          <Text className="text-white text-4xl">&nbsp;{currentWeather.name}</Text>
+          <TextInput
+          
+          />
         </View>
 
         <View className="flex-row bg-white/10 rounded-xl">
@@ -60,174 +75,122 @@ export default function HomeScreen() {
           <View className="flex-1 flex-col p-4 justify-between">
             <View>
               <Text className="text-white text-lg">
-                {`${formatDate_DayLong(currentWeather?.dt)}, ${formatDate_DayNumber(currentWeather?.dt)} ${formatDate_MonthShort(currentWeather?.dt)}`}
+                {`${formatDayLong(currentWeather.dt, currentWeather.timezone, languageGlobal)}, ${formatDayNumber(currentWeather.dt, currentWeather.timezone, languageGlobal)} ${formatMonthShort(currentWeather.dt, currentWeather.timezone, languageGlobal)}`}
               </Text>
-              <Text className="text-2xl text-white" >{currentWeather?.weather?.[0]?.main} </Text>
+              <Text className="text-2xl text-white" >{t(`homescreen.weather.${currentWeather.weather[0].main}`)}</Text>
+              <Text className="text-xl text-white" >{currentWeather.weather[0].description} </Text>
             </View>
 
             <View className="gap-2">
               <Text className="text-white text-4xl items-center">
                 <FontAwesome name="thermometer-3" color={'#FFFFFF'} size={32} />
-                &nbsp;{currentWeather?.main?.feels_like}&nbsp;°C
+                &nbsp;{currentWeather.main.feels_like}&nbsp;°{unitSymbol}
               </Text>
-              <Text className="text-white text-lg">{currentWeather?.main?.temp_min}&nbsp;°C&nbsp;&nbsp;-&nbsp;&nbsp;{currentWeather?.main?.temp_max}&nbsp;°C</Text>
+              <Text className="text-white text-lg">{currentWeather.main.temp_min}&nbsp;°{unitSymbol}&nbsp;&nbsp;-&nbsp;&nbsp;{currentWeather.main.temp_max}&nbsp;°{unitSymbol}</Text>
             </View>
           </View>
 
-          <Image className="flex-1 w-full" source={weatherIcons[currentWeather?.weather?.[0]?.icon + '@4x']} />
+          <Image className="flex-1 w-full" source={weatherIcons[currentWeather.weather[0].icon + '@4x']} />
 
         </View>
 
         <View className="flex-row gap-6">
-
-          <View className="flex-1 flex-col p-4 bg-white/10 rounded-xl">
-            <Text className="text-white text-lg font-light">
-              Temperature
-            </Text>
-            <Text className="text-white items-center justify-center text-2xl">
-              <FontAwesome name="thermometer-3" color={'#FFFFFF'} size={18} />
-              &nbsp;&nbsp;{currentWeather?.main.temp}&nbsp;°C
-            </Text>
-          </View>
-
-          <View className="flex-1 flex-col p-4 bg-white/10 rounded-xl">
-            <Text className="text-white text-lg font-light">
-              Humidity
-            </Text>
-            <Text className="text-white items-center justify-center text-2xl">
-              <Ionicons name="water-outline" size={18} color={'#FFFFFF'} />
-              &nbsp;&nbsp;{currentWeather?.main?.humidity}&nbsp;%
-            </Text>
-          </View>
-
+          <InformationCard
+            title={t(`homescreen.temperature`)}
+            icon={<FontAwesome name="thermometer-3" color={'#FFFFFF'} size={18} />}
+            data={`${currentWeather.main.temp} °${unitSymbol}`}
+          />
+          <InformationCard
+            title={t(`homescreen.humidity`)}
+            icon={<Ionicons name="water-outline" size={18} color={'#FFFFFF'} />}
+            data={`${currentWeather.main.humidity} %`}
+          />
         </View>
 
         <View className="flex-row gap-6">
-
-          <View className="flex-1 flex-col p-4 bg-white/10 rounded-xl">
-            <Text className="text-white text-lg font-light">
-              Wind Speed
-            </Text>
-            <Text className="text-white items-center justify-center text-2xl">
-              <FontAwesome5 name="wind" size={18} color={'#FFFFFF'} />
-              &nbsp;&nbsp;{currentWeather?.wind?.speed}&nbsp;m/s
-            </Text>
-          </View>
-
-          <View className="flex-1 flex-col p-4 bg-white/10 rounded-xl">
-            <Text className="text-white text-lg font-light">
-              Clouds
-            </Text>
-            <Text className="text-white items-center justify-center text-2xl">
-              <Ionicons name="cloud-outline" size={18} color={'#FFFFFF'} />
-              &nbsp;&nbsp;{currentWeather?.clouds?.all}&nbsp;%
-            </Text>
-          </View>
-
+          <InformationCard
+            title={t(`homescreen.wind_speed`)}
+            icon={<FontAwesome5 name="wind" size={18} color={'#FFFFFF'} />}
+            data={`${currentWeather.wind.speed} m/s`}
+          />
+          <InformationCard
+            title={t(`homescreen.clouds`)}
+            icon={<Ionicons name="cloud-outline" size={18} color={'#FFFFFF'} />}
+            data={`${currentWeather.clouds.all} %`}
+          />
         </View>
 
         <View className="flex-row gap-6">
-
-          <View className="flex-1 flex-col p-4 bg-white/10 rounded-xl">
-            <Text className="text-white text-lg font-light">
-              Visibility
-            </Text>
-            <Text className="text-white items-center justify-center text-2xl">
-              <Feather name="eye" size={18} color={'#FFFFFF'} />
-              &nbsp;&nbsp;{currentWeather?.visibility / 1000}&nbsp;Km
-            </Text>
-          </View>
-
-          <View className="flex-1 flex-col p-4 bg-white/10 rounded-xl">
-            <Text className="text-white text-lg font-light">
-              Pressure
-            </Text>
-            <Text className="text-white items-center justify-center text-2xl">
-              <Entypo name="gauge" size={18} color={'#FFFFFF'} />
-              &nbsp;&nbsp;{currentWeather?.main.pressure}&nbsp;hPa
-            </Text>
-          </View>
-
+          <InformationCard
+            title={t(`homescreen.visibility`)}
+            icon={<Feather name="eye" size={18} color={'#FFFFFF'} />}
+            data={`${currentWeather.visibility / 1000} Km`}
+          />
+          <InformationCard
+            title={t(`homescreen.pressure`)}
+            icon={<Entypo name="gauge" size={18} color={'#FFFFFF'} />}
+            data={`${currentWeather.main.pressure} hPa`}
+          />
         </View>
 
         <View className="flex-row gap-6">
-
-          <View className="flex-1 flex-col p-4 bg-white/10 rounded-xl">
-            <Text className="text-white text-lg font-light">
-              Ground Level
-            </Text>
-            <Text className="text-white items-center justify-center text-2xl">
-              <MaterialCommunityIcons name="terrain" size={24} color={'#FFFFFF'} />
-              &nbsp;&nbsp;{currentWeather?.main?.grnd_level}&nbsp;hPa
-            </Text>
-          </View>
-
-          <View className="flex-1 flex-col p-4 bg-white/10 rounded-xl">
-            <Text className="text-white text-lg font-light">
-              Sea Level
-            </Text>
-            <Text className="text-white items-center justify-center text-2xl">
-              <MaterialCommunityIcons name="waves" size={24} color={'#FFFFFF'} />
-              &nbsp;&nbsp;{currentWeather?.main?.sea_level}&nbsp;hPa
-            </Text>
-          </View>
-
+          <InformationCard
+            title={t(`homescreen.ground_level`)}
+            icon={<MaterialCommunityIcons name="terrain" size={24} color={'#FFFFFF'} />}
+            data={`${currentWeather.main.grnd_level} hPa`}
+          />
+          <InformationCard
+            title={t(`homescreen.sea_level`)}
+            icon={<MaterialCommunityIcons name="waves" size={24} color={'#FFFFFF'} />}
+            data={`${currentWeather.main.sea_level} hPa`}
+          />
         </View>
 
         <View className="flex-row gap-6">
-
-          <View className="flex-1 flex-col p-4 bg-white/10 rounded-xl">
-            <Text className="text-white text-lg font-light">
-              Sunrise
-            </Text>
-            <Text className="text-white items-center justify-center text-2xl">
-              <Feather name="sunrise" size={24} color={'#FFFFFF'} />
-              &nbsp;&nbsp;{formatTime_HHMM(currentWeather?.sys?.sunrise)}
-            </Text>
-          </View>
-
-          <View className="flex-1 flex-col p-4 bg-white/10 rounded-xl">
-            <Text className="text-white text-lg font-light">
-              Sunset
-            </Text>
-            <Text className="text-white items-center justify-center text-2xl">
-              <MaterialCommunityIcons name="weather-sunset" size={24} color={'#FFFFFF'} />
-              &nbsp;&nbsp;{formatTime_HHMM(currentWeather?.sys?.sunset)}
-            </Text>
-          </View>
-
+          <InformationCard
+            title={t(`homescreen.sunrise`)}
+            icon={<Feather name="sunrise" size={24} color={'#FFFFFF'} />}
+            data={`${formatTime(currentWeather.sys.sunrise, currentWeather.timezone, timeFormatGlobal)}`}
+          />
+          <InformationCard
+            title={t(`homescreen.sunset`)}
+            icon={<MaterialCommunityIcons name="weather-sunset" size={24} color={'#FFFFFF'} />}
+            data={`${formatTime(currentWeather.sys.sunset, currentWeather.timezone, timeFormatGlobal)}`}
+          />
         </View>
 
         <View className="w-full flex-row items-center mt-6">
           <FontAwesome name="calendar" color={'#FFFFFF'} size={18} />
-          <Text className="text-white text-2xl">&nbsp;&nbsp;Forecast</Text>
+          <Text className="text-white text-2xl">&nbsp;&nbsp;{t("homescreen.forecast")}</Text>
         </View>
 
-        <View className="flex-row flex-wrap justify-around gap-2">
-          {forecast?.list?.slice(0, 40).map((forecast: any) => (
+        <View className="flex-row flex-wrap justify-around gap-1">
+
+          {forecast.list.slice(0, 4).map((forecast: any) => (
             <View
               key={forecast.dt}
-              className="bg-white/10 rounded-t-full rounded-b-full w-1/5 items-center p-2"
+              className="bg-white/10 rounded-t-full rounded-b-full w-1/5 items-center p-1"
             >
               <Text className="text-white mt-6">
-                {formatDate_DayNumber(forecast.dt)}&nbsp;/&nbsp;
-                {formatDate_MonthShort(forecast.dt)}
+                {formatDayNumber(forecast.dt, currentWeather.timezone, languageGlobal)}&nbsp;/&nbsp;
+                {formatMonthShort(forecast.dt, currentWeather.timezone, languageGlobal)}
               </Text>
               <Text className="text-white">
-                {formatTime_HHMM(forecast.dt)}
+                {formatTime(forecast.dt, currentWeather.timezone, timeFormatGlobal)}
               </Text>
               <Image
                 className="w-12 h-12"
                 source={weatherIcons[forecast.weather[0].icon]}
               />
               <Text className="text-white mb-6">
-                {forecast.main.feels_like}&nbsp;°C
+                {forecast.main.feels_like}&nbsp;°{unitSymbol}
               </Text>
             </View>
           ))}
+
         </View>
 
-        <Link href={'/Forecast'} className="text-white text-xl mb-8">See Full Forecast...</Link>
+        <Link href={'/(tabs)/forecast'} className="text-white text-xl mb-8">{t("homescreen.see_full_forecast")}...</Link>
 
       </View>
     </ScreenLayout >

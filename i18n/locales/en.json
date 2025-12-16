@@ -1,0 +1,49 @@
+{
+  "tab" : {
+    "weather" : "Weather",
+    "forecast" : "Forecast",
+    "settings" : "Settings"
+  },
+  "homescreen": {
+    "weather": {
+      "Thunderstorm": "Thunderstorm",
+      "Drizzle": "Drizzle",
+      "Rain": "Rain",
+      "Snow": "Snow",
+      "Mist": "Mist",
+      "Smoke": "Smoke",
+      "Haze": "Haze",
+      "Dust": "Dust",
+      "Fog": "Fog",
+      "Sand": "Sand",
+      "Ash": "Ash",
+      "Squall": "Squall",
+      "Tornado": "Tornado",
+      "Clear": "Clear",
+      "Clouds": "Clouds"
+    },
+    "temperature" : "Temperature",
+    "humidity" : "Humidity",
+    "wind_speed" : "Wind Speed",
+    "clouds" : "Clouds",
+    "visibility" : "Visibility",
+    "pressure" : "Pressure",
+    "ground_level" : "Ground Level",
+    "sea_level" : "Sea Level",
+    "sunrise" : "Sunrise",
+    "sunset" : "Sunset",
+    "forecast": "Forecast",
+    "see_full_forecast" : "See Full Forecast"
+  },
+  "forecast": {
+    "real_feel_temperature_graphic" : "Real Feel Temperature Graphic",
+    "5_days_weather_forecast" : "5 Days Weather Forecast",
+    "click_forecast_to_see_details" : "Click Forecast to See the Details"
+  },
+  "settings": {
+    "settings" : "Settings",
+    "metrics" : "Metrics",
+    "time_format": "Time Format",
+    "hours" : "Hours"
+  }
+}

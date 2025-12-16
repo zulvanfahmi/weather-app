@@ -13,7 +13,6 @@ const forecastSlice = createSlice({
         builder
             .addCase(fetchforecast.pending, (state) => {
                 state.loadingForecast = true;
-                state.forecast = null;
                 state.errorForecast = null;
             })
             .addCase(fetchforecast.fulfilled, (state, action) => {
@@ -23,8 +22,8 @@ const forecastSlice = createSlice({
             })
             .addCase(fetchforecast.rejected, (state, action) => {
                 state.loadingForecast = false;
-                state.forecast = null;
-                state.errorForecast = action.error.message || "Failed to fetch weather";
+                state.errorForecast =
+                    action.error.message || "Failed to fetch forecast";
             });
     },
 });

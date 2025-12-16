@@ -1,7 +1,9 @@
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 export default function Layout() {
+  const { t } = useTranslation();
   return (
     <Tabs
       screenOptions={{
@@ -28,7 +30,7 @@ export default function Layout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Weather",
+          title: t("tab.weather"),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="weather-partly-snowy-rainy"
@@ -40,9 +42,9 @@ export default function Layout() {
       />
 
       <Tabs.Screen
-        name="Forecast"
+        name="forecast/index"
         options={{
-          title: "Forecast",
+          title: t("tab.forecast"),
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="calendar" size={size} color={color} />
           ),
@@ -52,7 +54,7 @@ export default function Layout() {
       <Tabs.Screen
         name="Settings"
         options={{
-          title: "Settings",
+          title: t("tab.settings"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings-outline" size={size} color={color} />
           ),
