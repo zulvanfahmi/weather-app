@@ -27,13 +27,13 @@ export default function Search() {
     const { units } = useSelector((state: RootState) => state.temperatureUnit);
     const { lat, lon, loadingLocation, errorLocation } = useSelector((state: RootState) => state.location);
     const { t } = useTranslation();
-
+    const [firstTimeAccessSearchPage, setFirstTimeAccessSearchPage] = useState(true);
 
     useEffect(() => {
         if (currentWeather?.name && citySearch === "") {
             setCitySearch(currentWeather.name);
         }
-    }, [currentWeather, citySearch]);
+    }, [currentWeather]);
 
     if (loadingLocation || loadingWeather || loadingForecast) {
         return (
@@ -74,11 +74,13 @@ export default function Search() {
                         onFocus={() => setIsFocusedCitySearch(true)}
                         onBlur={() => setIsFocusedCitySearch(false)}
                         onSubmitEditing={() => {
-                            dispatch(fetchCityName({ name: citySearch.trim() }))
+                            dispatch(fetchCityName({ name: citySearch.trim() }));
+                            setFirstTimeAccessSearchPage(false);
                         }}
                     />
                     <Pressable onPress={() => {
                         dispatch(fetchCityName({ name: citySearch.trim() }));
+                        setFirstTimeAccessSearchPage(false);
                     }}
                         className="items-center justify-center">
                         <Ionicons
@@ -115,7 +117,7 @@ export default function Search() {
                             <Text className="text-white">{t(`search.country`)} : {countries.getName(city.country, APILanguageCode)}</Text>
                         </Pressable>
                     ))}
-                    {(!loadingCityName && cityName.length === 0) && (
+                    {(!loadingCityName && cityName.length === 0 && firstTimeAccessSearchPage === false) && (
                         <View className="border-b border-slate-600 py-4">
                             <Text className="text-xl text-white pb-1">{t(`search.not_found`)}</Text>
                             <Text className="text-white text-justify">{t(`search.not_found_subtitle`)}</Text>

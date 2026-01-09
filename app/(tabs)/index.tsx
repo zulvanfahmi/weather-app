@@ -61,7 +61,7 @@ export default function HomeScreen() {
     return <IndexLoading />;
   }
 
-  console.log(`location lat:${lat} lon:${lon} --- weather lat:${currentWeather.coord.lat} lon:${currentWeather.coord.lon}`)
+  // console.log(`location lat:${lat} lon:${lon} --- weather lat:${currentWeather.coord.lat} lon:${currentWeather.coord.lon}`)
 
   return (
     <ScreenLayout>
