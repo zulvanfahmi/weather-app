@@ -1,50 +1,52 @@
-# Welcome to your Expo app 👋
+# 🌦️ Mobile Weather Application
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile weather application designed to deliver **real-time weather updates and forecasts ⏱️** based on selected locations 📍.  
+The application features a **clean and responsive mobile interface 📱**, supports **location-based weather detection 🛰️**, and presents weather information in a **simple and easy-to-understand format 🌡️**.
 
-## Get started
+---
 
-1. Install dependencies
+## ✨ Features
+- 📍 **Real-time weather forecast based on the user’s current location**
+- 🔍 **Search weather by city**
+- 🌡️ **Detailed weather information**, including:
+  - Temperature
+  - Humidity
+  - Wind speed
+  - Visibility
+  - Other weather conditions
+- 📅 **5-day weather forecast**
+- 📊 **Temperature visualization for the 5-day forecast**
+- 🌍 **Multiple measurement units support**
+  - Celsius (°C)
+  - Kelvin (K)
+  - Fahrenheit (°F)
+- 🌐 **Multi-language support**
+  - Indonesian 🇮🇩
+  - English 🇺🇸
+- ⏰ **12-hour and 24-hour time format support**
 
-   ```bash
-   npm install
-   ```
+---
 
-2. Start the app
+## 🛠️ Tech Stack
 
-   ```bash
-   npx expo start
-   ```
+- Frontend: React Native / Expo  
+- Weather API:
+   - Third-party Weather API : https://openweathermap.org/api (Free Version)
+   - City Search : https://api-ninjas.com/api/city (Free Version)
+- State Management: React Hooks  
+- Styling: Tailwind by NativeWind 
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🚀 How It Works
+1. The app detects the user’s current location (with permission).
+2. Weather data is fetched in real time from a third-party weather API.
+3. Users can search for weather information by city name.
+4. Forecast data and visual temperature charts are displayed for the next 5 days.
+5. Users can customize:
+   - Temperature units
+   - Language
+   - Time format
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
