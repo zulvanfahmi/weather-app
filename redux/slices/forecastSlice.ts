@@ -1,5 +1,5 @@
 import { fetchforecast } from "@/services/WeatherService";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const forecastSlice = createSlice({
     name: "forecast",
@@ -7,8 +7,13 @@ const forecastSlice = createSlice({
         forecast: null as any | null,
         loadingForecast: false,
         errorForecast: null as string | null,
+        isForecastLoadedBySearch: false,
     },
-    reducers: {},
+    reducers: {
+    setIsForecastLoadedBySearch(state, action: PayloadAction<boolean>) {
+      state.isForecastLoadedBySearch = action.payload;
+    }
+  },
     extraReducers: (builder) => {
         builder
             .addCase(fetchforecast.pending, (state) => {
@@ -28,4 +33,5 @@ const forecastSlice = createSlice({
     },
 });
 
+export const { setIsForecastLoadedBySearch } = forecastSlice.actions;
 export default forecastSlice.reducer;

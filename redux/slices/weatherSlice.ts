@@ -1,5 +1,5 @@
 import { fetchWeather } from "@/services/WeatherService";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const weatherSlice = createSlice({
   name: "weather",
@@ -7,8 +7,13 @@ const weatherSlice = createSlice({
     currentWeather: null as any | null,
     loadingWeather: false,
     errorWeather: null as string | null,
+    isWeatherLoadedBySearch: false,
   },
-  reducers: {},
+  reducers: {
+    setIsWeatherLoadedBySearch(state, action: PayloadAction<boolean>) {
+      state.isWeatherLoadedBySearch = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchWeather.pending, (state) => {
@@ -28,5 +33,5 @@ const weatherSlice = createSlice({
   },
 });
 
-
+export const { setIsWeatherLoadedBySearch } = weatherSlice.actions;
 export default weatherSlice.reducer;

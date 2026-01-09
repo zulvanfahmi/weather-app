@@ -1,8 +1,9 @@
 {
-  "tab" : {
-    "weather" : "Weather",
-    "forecast" : "Forecast",
-    "settings" : "Settings"
+  "tab": {
+    "weather": "Weather",
+    "forecast": "Forecast",
+    "settings": "Settings",
+    "search": "Search"
   },
   "homescreen": {
     "weather": {
@@ -22,28 +23,36 @@
       "Clear": "Clear",
       "Clouds": "Clouds"
     },
-    "temperature" : "Temperature",
-    "humidity" : "Humidity",
-    "wind_speed" : "Wind Speed",
-    "clouds" : "Clouds",
-    "visibility" : "Visibility",
-    "pressure" : "Pressure",
-    "ground_level" : "Ground Level",
-    "sea_level" : "Sea Level",
-    "sunrise" : "Sunrise",
-    "sunset" : "Sunset",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "wind_speed": "Wind Speed",
+    "clouds": "Clouds",
+    "visibility": "Visibility",
+    "pressure": "Pressure",
+    "ground_level": "Ground Level",
+    "sea_level": "Sea Level",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset",
     "forecast": "Forecast",
-    "see_full_forecast" : "See Full Forecast"
+    "see_full_forecast": "See Full Forecast"
   },
   "forecast": {
-    "real_feel_temperature_graphic" : "Real Feel Temperature Graphic",
-    "5_days_weather_forecast" : "5 Days Weather Forecast",
-    "click_forecast_to_see_details" : "Click Forecast to See the Details"
+    "real_feel_temperature_graphic": "Real Feel Temperature Graphic",
+    "5_days_weather_forecast": "5 Days Weather Forecast",
+    "click_forecast_to_see_details": "Click Forecast to See the Details"
+  },
+  "search": {
+    "search_city": "Search City",
+    "search_by_click_icon": "To search tap the icon",
+    "get_weather_by_location": "Get weather information based on your current location",
+    "country": "Country",
+    "not_found" : "City Not Found",
+    "not_found_subtitle" : "This application uses a free version of a third-party API, so not all cities are available. The data generally covers major cities only."
   },
   "settings": {
-    "settings" : "Settings",
-    "metrics" : "Metrics",
+    "settings": "Settings",
+    "metrics": "Metrics",
     "time_format": "Time Format",
-    "hours" : "Hours"
+    "hours": "Hours"
   }
 }

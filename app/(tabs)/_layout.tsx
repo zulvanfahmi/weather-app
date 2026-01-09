@@ -52,6 +52,16 @@ export default function Layout() {
       />
 
       <Tabs.Screen
+        name="Search"
+        options={{
+          title: t("tab.search"),
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="search" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
         name="Settings"
         options={{
           title: t("tab.settings"),

@@ -2,7 +2,8 @@
   "tab": {
     "weather": "Cuaca",
     "forecast": "Prakiraan",
-    "settings": "Pengaturan"
+    "settings": "Pengaturan",
+    "search": "Pencarian"
   },
   "homescreen": {
     "weather": {
@@ -40,10 +41,18 @@
     "5_days_weather_forecast": "Prakiraan Cuaca 5 Hari",
     "click_forecast_to_see_details": "Klik Prakiraan untuk Melihat Detail"
   },
+  "search": {
+    "search_city": "Cari Kota",
+    "search_by_click_icon": "Untuk melakukan pencarian tekan ikon",
+    "get_weather_by_location": "Dapatkan informasi cuaca berdasarkan lokasi Anda saat ini",
+    "country": "Negara",
+    "not_found" : "Kota tidak ditemukan",
+    "not_found_subtitle" : "Aplikasi ini menggunakan API pihak ketiga versi gratis, sehingga tidak semua kota dapat ditemukan. Data yang tersedia umumnya hanya mencakup kota-kota besar."
+  },
   "settings": {
     "settings": "Pengaturan",
     "metrics": "Metrik",
     "time_format": "Format Waktu",
-    "hours" : "Jam"
+    "hours": "Jam"
   }
 }

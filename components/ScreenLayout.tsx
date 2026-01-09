@@ -12,6 +12,7 @@ export default function ScreenLayout({ children }: ScreenLayoutProps) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         decelerationRate="fast"
+        keyboardShouldPersistTaps="handled"
       >
         {children}
       </ScrollView>

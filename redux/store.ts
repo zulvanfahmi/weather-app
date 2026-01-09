@@ -1,5 +1,6 @@
 // src/redux/store.ts
 import { configureStore } from "@reduxjs/toolkit";
+import cityNameReducer from "./slices/cityNameSlice";
 import forecastReducer from "./slices/forecastSlice";
 import languageReducer from "./slices/languageSlice";
 import locationReducer from "./slices/locationSlice";
@@ -15,6 +16,7 @@ export const store = configureStore({
     language: languageReducer,
     temperatureUnit: temperatureUnitSlice,
     timeFormat: timeFormatReducer,
+    cityName: cityNameReducer,
   },
 });
 

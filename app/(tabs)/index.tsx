@@ -2,6 +2,8 @@ import { weatherIcons } from "@/assets/icon/weather";
 import IndexLoading from "@/components/page/IndexLoading";
 import ScreenLayout from "@/components/ScreenLayout";
 import InformationCard from "@/components/ui/InformationCard";
+import { setIsForecastLoadedBySearch } from "@/redux/slices/forecastSlice";
+import { setIsWeatherLoadedBySearch } from "@/redux/slices/weatherSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchLocation } from "@/services/LocationService";
 import { fetchforecast, fetchWeather } from "@/services/WeatherService";
@@ -10,7 +12,7 @@ import { Entypo, Feather, FontAwesome, FontAwesome5, Ionicons, MaterialCommunity
 import { Link } from "expo-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Text, TextInput, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -18,25 +20,26 @@ export default function HomeScreen() {
 
   const dispatch = useDispatch<AppDispatch>();
   const { lat, lon, loadingLocation, errorLocation } = useSelector((state: RootState) => state.location);
-  const { currentWeather, loadingWeather, errorWeather } = useSelector((state: RootState) => state.weather);
-  const { forecast, loadingForecast, errorForecast } = useSelector((state: RootState) => state.forecast);
+  const { currentWeather, loadingWeather, errorWeather, isWeatherLoadedBySearch } = useSelector((state: RootState) => state.weather);
+  const { forecast, loadingForecast, errorForecast, isForecastLoadedBySearch } = useSelector((state: RootState) => state.forecast);
+
   const { timeFormatGlobal } = useSelector((state: RootState) => state.timeFormat);
   const { units, unitSymbol } = useSelector((state: RootState) => state.temperatureUnit);
   const { languageGlobal, APILanguageCode } = useSelector((state: RootState) => state.language);
   const { t } = useTranslation();
-  // const [citySearch, setCitySearch] = useState(currentWeather.name);
 
   useEffect(() => {
-    dispatch(fetchLocation());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (typeof lat === 'number' && typeof lon === 'number') {
-      const lang = APILanguageCode;
-      dispatch(fetchWeather({ lat, lon, units,lang }));
-      dispatch(fetchforecast({ lat, lon, units, lang }));
+    if (typeof lat !== 'number' && typeof lon !== 'number') {
+      dispatch(fetchLocation());
     }
-  }, [dispatch, lat, lon, units, APILanguageCode]);
+  }, [dispatch, lat, lon]);
+
+  useEffect(() => {
+    if (typeof lat === 'number' && typeof lon === 'number' && !isForecastLoadedBySearch && !isWeatherLoadedBySearch) {
+      dispatch(fetchWeather({ lat, lon, units, lang: APILanguageCode }));
+      dispatch(fetchforecast({ lat, lon, units, lang: APILanguageCode }));
+    }
+  }, [dispatch, lat, lon, units, APILanguageCode, isForecastLoadedBySearch, isWeatherLoadedBySearch]);
 
   if (loadingLocation || loadingWeather || loadingForecast) {
     return (
@@ -58,20 +61,16 @@ export default function HomeScreen() {
     return <IndexLoading />;
   }
 
+  console.log(`location lat:${lat} lon:${lon} --- weather lat:${currentWeather.coord.lat} lon:${currentWeather.coord.lon}`)
+
   return (
     <ScreenLayout>
-
-      <View className="gap-6 mt-8">
+      <View className="gap-6 my-8">
         <View className="w-full flex-row items-center my-2">
           <Ionicons color={'#FFFFFF'} size={32} name="location-outline" />
           <Text className="text-white text-4xl">&nbsp;{currentWeather.name}</Text>
-          <TextInput
-          
-          />
         </View>
-
         <View className="flex-row bg-white/10 rounded-xl">
-
           <View className="flex-1 flex-col p-4 justify-between">
             <View>
               <Text className="text-white text-lg">
@@ -190,7 +189,18 @@ export default function HomeScreen() {
 
         </View>
 
-        <Link href={'/(tabs)/forecast'} className="text-white text-xl mb-8">{t("homescreen.see_full_forecast")}...</Link>
+        <Link href={'/(tabs)/forecast'} className="text-white text-xl">{t("homescreen.see_full_forecast")}...</Link>
+
+        {(lat?.toFixed(2) !== currentWeather.coord.lat.toFixed(2) && lon?.toFixed(2) !== currentWeather.coord.lon.toFixed(2)) && (<View className="items-center">
+          <Pressable onPress={() => {
+            dispatch(fetchLocation())
+            dispatch(setIsForecastLoadedBySearch(false))
+            dispatch(setIsWeatherLoadedBySearch(false))
+          }}>
+            <Text className="bg-blue-500 py-3 px-4 text-white text-xl rounded-xl">Get weather by your current location!</Text>
+          </Pressable>
+        </View>
+        )}
 
       </View>
     </ScreenLayout >
